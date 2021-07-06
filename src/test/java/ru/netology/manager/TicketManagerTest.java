@@ -47,7 +47,6 @@ class TicketManagerTest {
     public void searchNothing() {
         Ticket[] expected = new Ticket[]{};
         Ticket[] actual = manager.searchBy("SVO", "SVO");
-        Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
@@ -55,7 +54,6 @@ class TicketManagerTest {
     public void searchSome() {
         Ticket[] expected = new Ticket[]{item9, item6, item8, item7};
         Ticket[] actual = manager.searchBy("LED", "SVO");
-        Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
@@ -63,7 +61,6 @@ class TicketManagerTest {
     public void searchLowerCase() {
         Ticket[] expected = new Ticket[]{item9, item6, item8, item7};
         Ticket[] actual = manager.searchBy("led", "svo");
-        Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
@@ -71,7 +68,6 @@ class TicketManagerTest {
     public void searchOne() {
         Ticket[] expected = new Ticket[]{item5};
         Ticket[] actual = manager.searchBy("svo", "LED");
-        Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
@@ -81,7 +77,6 @@ class TicketManagerTest {
         manager.save(item1);
         Ticket[] expected = new Ticket[]{item1};
         Ticket[] actual = manager.searchBy("dme", "LED");
-        Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
@@ -90,7 +85,6 @@ class TicketManagerTest {
         TicketManager manager = new TicketManager();
         Ticket[] expected = new Ticket[]{};
         Ticket[] actual = manager.searchBy("svo", "LED");
-        Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
@@ -99,7 +93,6 @@ class TicketManagerTest {
         manager.remove(6);
         Ticket[] expected = new Ticket[]{item9, item8, item7};
         Ticket[] actual = manager.searchBy("led", "svo");
-        Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
