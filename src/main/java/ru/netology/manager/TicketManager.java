@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import ru.netology.domain.Ticket;
 import ru.netology.repository.TicketRepository;
 
+import java.util.Comparator;
+
 
 @RequiredArgsConstructor
 
@@ -14,7 +16,7 @@ public class TicketManager {
         repo.save(product);
     }
 
-    public Ticket[] searchBy(String departed, String arrival) {
+    public Ticket[] searchBy(String departed, String arrival, Comparator<Ticket> comparator) {
         Ticket[] result = new Ticket[0];
         for (Ticket item : repo.findAll()) {
             if (item.getArrival().equalsIgnoreCase(arrival) & item.getDeparture().equalsIgnoreCase(departed)) {

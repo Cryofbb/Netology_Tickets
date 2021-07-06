@@ -4,8 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.NotFoundExeption;
 import ru.netology.domain.Ticket;
+import ru.netology.domain.TicketsByPriceComparator;
+import ru.netology.domain.TicketsByTimeComparator;
 
 import java.util.Arrays;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,38 +42,61 @@ class TicketManagerTest {
     public void sortByPrice() {
         Ticket[] expected = new Ticket[]{item5, item9, item6, item8, item3, item1, item2, item4, item7};
         Ticket[] actual = new Ticket[]{item1, item2, item3, item4, item5, item6, item7, item8, item9};
-        Arrays.sort(actual);
+        Arrays.sort(actual, new TicketsByPriceComparator());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void sortByTime() {
+        Ticket[] expected = new Ticket[]{item4, item1, item5, item2, item3, item8, item6, item7, item9};
+        Ticket[] actual = new Ticket[]{item1, item2, item3, item4, item5, item6, item7, item8, item9};
+        Arrays.sort(actual, new TicketsByTimeComparator());
         assertArrayEquals(expected, actual);
     }
 
     @Test
     public void searchNothing() {
         Ticket[] expected = new Ticket[]{};
-        Ticket[] actual = manager.searchBy("SVO", "SVO");
-        Arrays.sort(actual);
+        Ticket[] actual = manager.searchBy("SVO", "SVO", new TicketsByPriceComparator());
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void searchSome() {
+    public void searchSomeByPrice() {
         Ticket[] expected = new Ticket[]{item9, item6, item8, item7};
-        Ticket[] actual = manager.searchBy("LED", "SVO");
-        Arrays.sort(actual);
+        Ticket[] actual = manager.searchBy("LED", "SVO", new TicketsByPriceComparator());
+        Arrays.sort(actual, new TicketsByPriceComparator());
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void searchLowerCase() {
+    public void searchSomeByTime() {
+        Ticket[] expected = new Ticket[]{item8, item6, item7, item9};
+        Ticket[] actual = manager.searchBy("LED", "SVO", new TicketsByTimeComparator());
+        Arrays.sort(actual, new TicketsByTimeComparator());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void searchLowerCaseByPrice() {
         Ticket[] expected = new Ticket[]{item9, item6, item8, item7};
-        Ticket[] actual = manager.searchBy("led", "svo");
-        Arrays.sort(actual);
+        Ticket[] actual = manager.searchBy("led", "svo", new TicketsByPriceComparator());
+        Arrays.sort(actual, new TicketsByPriceComparator());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void searchLowerCaseByTime() {
+        Ticket[] expected = new Ticket[]{item8, item6, item7, item9};
+        Ticket[] actual = manager.searchBy("led", "svo", new TicketsByTimeComparator());
+        Arrays.sort(actual, new TicketsByTimeComparator());
         assertArrayEquals(expected, actual);
     }
 
     @Test
     public void searchOne() {
         Ticket[] expected = new Ticket[]{item5};
-        Ticket[] actual = manager.searchBy("svo", "LED");
+        Ticket[] actual = manager.searchBy("svo", "LED", new TicketsByPriceComparator());
         Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
@@ -80,7 +106,7 @@ class TicketManagerTest {
         TicketManager manager = new TicketManager();
         manager.save(item1);
         Ticket[] expected = new Ticket[]{item1};
-        Ticket[] actual = manager.searchBy("dme", "LED");
+        Ticket[] actual = manager.searchBy("dme", "LED", new TicketsByPriceComparator());
         Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
@@ -89,22 +115,31 @@ class TicketManagerTest {
     public void searchNothingInEmpty() {
         TicketManager manager = new TicketManager();
         Ticket[] expected = new Ticket[]{};
-        Ticket[] actual = manager.searchBy("svo", "LED");
+        Ticket[] actual = manager.searchBy("svo", "LED", new TicketsByPriceComparator());
         Arrays.sort(actual);
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void removeByID() {
+    public void removeByIDAndSortByPrice() {
         manager.remove(6);
         Ticket[] expected = new Ticket[]{item9, item8, item7};
-        Ticket[] actual = manager.searchBy("led", "svo");
-        Arrays.sort(actual);
+        Ticket[] actual = manager.searchBy("led", "svo", new TicketsByPriceComparator());
+        Arrays.sort(actual, new TicketsByPriceComparator());
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void removeByWrongID(){
+    public void removeByIDAndSortByTime() {
+        manager.remove(6);
+        Ticket[] expected = new Ticket[]{item8, item7, item9};
+        Ticket[] actual = manager.searchBy("led", "svo", new TicketsByTimeComparator());
+        Arrays.sort(actual, new TicketsByTimeComparator());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void removeByWrongID() {
         assertThrows(NotFoundExeption.class, () -> {
             manager.remove(23);
         });
