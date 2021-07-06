@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ru.netology.domain.Ticket;
 import ru.netology.repository.TicketRepository;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 
@@ -26,6 +27,7 @@ public class TicketManager {
                 result = tmp;
             }
         }
+        Arrays.sort(result, comparator);
         return result;
     }
 
